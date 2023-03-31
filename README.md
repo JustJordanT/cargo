@@ -3,7 +3,7 @@ a package manager...
 ![image](https://user-images.githubusercontent.com/38886930/229208345-8452f001-18ba-4246-b080-8bfe9ad2d306.png)
 
 # Technical Overview of Porter
-Security and privacy are critical considerations in the design of the Porter application. The application provides a secure and reliable way for users to manage their application installations and configurations, including the ability to work with private repositories.
+Security and privacy are critical considerations in the design of the Porter. Porter provides a secure and reliable way for users to manage their application installations and configurations, including the ability to work with private repositories.
 
 Porter allows users to add private repositories as crates, enabling them to manage sensitive application data securely. When adding a private repository as a crate, users are prompted to provide their Git credentials, which are securely stored in Porter's configuration files using industry-standard encryption mechanisms.
 
