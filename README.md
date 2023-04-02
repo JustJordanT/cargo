@@ -25,6 +25,10 @@ To add a crate to a user's configuration, the following command can be used:
 ```bash
 cargo add crate github.com/justjordant/cli-ops
 ```
+To add a container point to a org
+```bash
+cargo add container github.com/xyz
+```
 
 To install an application that has been added to the user's configuration:
 ```bash
