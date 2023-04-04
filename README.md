@@ -23,16 +23,19 @@ Cargo provides the ability to install or uninstall an application that is specif
 # Examples
 To add a crate to a user's configuration, the following command can be used:
 ```bash
-cargo add crate github.com/justjordant/cli-ops
+cargo crate add github.com/justjordant/cli-ops
+cargo crate remvoe github.com/justjordant/cli-ops
+
 ```
 To add a container point to a org
 ```bash
-cargo add container github.com/xyz
+cargo container add github.com/justjordant
+cargo container remove github.com/justjordant
 ```
 
 To install an application that has been added to the user's configuration:
 ```bash
-cargo install justjordant/cli-ops
+cargo crate install justjordant/cli-ops
 ```
 
 To uninstall an application that has been installed using Cargo:
