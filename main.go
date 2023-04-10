@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/JustJordanT/cargo/cmd"
+	"github.com/justjordant/cargo/cmd"
 	"github.com/justjordant/cargo/internals/initUtils"
 )
 
