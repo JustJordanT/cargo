@@ -1,12 +1,14 @@
 package main
 
 import (
+	"github.com/JustJordanT/cargo/cmd"
 	"github.com/justjordant/cargo/internals/initUtils"
 )
 
 func main() {
 
 	initUtils.InitDirs()
+	cmd.Execute()
 
 	//  url := internals.GetCrateUrl("example.yml")
 	//  fmt.Println(url)
