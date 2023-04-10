@@ -1,13 +1,16 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/justjordant/cargo/internals"
+	"github.com/justjordant/cargo/internals/initUtils"
 )
 
 func main() {
-	fmt.Println(internals.GetCrateUrl("cli-ops.yml"))
+
+	initUtils.InitDirs()
+
+	//  url := internals.GetCrateUrl("example.yml")
+	//  fmt.Println(url)
+	//  fmt.Println(internals.DownloadCargoYaml(fileName, url))
 	// TODO Parse need to be cleaned up
 	// TODO Need to pass in what file we want to download from the `Crates` to then be installed down the pipe
 }

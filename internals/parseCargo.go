@@ -2,16 +2,22 @@ package internals
 
 import (
 	"context"
+	"io"
 	"log"
+	"net/http"
+	"os"
 
 	"github.com/google/go-github/v37/github"
+	"github.com/justjordant/cargo/internals/initUtils"
 	"golang.org/x/oauth2"
 )
+
+var GitEnv = os.Getenv("CARGO_TOEKN")
 
 // Set up a new GitHub client with an access token
 var ctx = context.Background()
 var ts = oauth2.StaticTokenSource(
-	&oauth2.Token{AccessToken: "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"},
+	&oauth2.Token{AccessToken: GitEnv},
 )
 var tc = oauth2.NewClient(ctx, ts)
 var client = github.NewClient(tc)
@@ -47,11 +53,32 @@ func GetCrateUrl(fileName string) string {
 		//  fmt.Println(content.GetPath())
 		//  fmt.Println("\n")
 		if fileName == content.GetName() {
-			crateUrl = content.GetURL()
+			crateUrl = content.GetDownloadURL()
 		}
 	}
 	return crateUrl
 }
 
-func downloadCargoYaml(fileName string) {
+func DownloadCargoYaml(crateUrl string) (err error) {
+	// Create the filePath
+	out, err := os.Create(initUtils.CargoPath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	// Get the data
+	resp, err := http.Get(crateUrl)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Writer the body to file
+	_, err = io.Copy(out, resp.Body)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
