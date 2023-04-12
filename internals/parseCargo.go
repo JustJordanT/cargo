@@ -12,7 +12,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-var GitEnv = os.Getenv("CARGO_TOEKN")
+var GitEnv = os.Getenv("CARGO_TOKEN")
 
 // Set up a new GitHub client with an access token
 var ctx = context.Background()
@@ -114,7 +114,6 @@ func CheckSHA() {
 
 func EncryptCred() {
 	// TODO - How should this be encrypted? Bcrypt, RSA?
-	// EncryptCred before storing it in the yaml configuration.
 	log.Fatal("func not yet implamented!!")
 }
 
