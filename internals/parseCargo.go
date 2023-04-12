@@ -16,15 +16,16 @@ var GitEnv = os.Getenv("CARGO_TOEKN")
 
 // Set up a new GitHub client with an access token
 var ctx = context.Background()
-var ts = oauth2.StaticTokenSource(
+var githubToken = oauth2.StaticTokenSource(
 	&oauth2.Token{AccessToken: GitEnv},
 )
-var tc = oauth2.NewClient(ctx, ts)
+var tc = oauth2.NewClient(ctx, githubToken)
 var client = github.NewClient(tc)
 
-func GetCrateUrl(fileName string) string {
+func GetCrateUrl(fileName string) (string, string) {
 	// Get the contents of the "crates" folder
 	crateUrl := ""
+	crateFile := ""
 	_, dirContents, _, err := client.Repositories.GetContents(ctx, "justjordant", "cargo-crates", "Crates", &github.RepositoryContentGetOptions{})
 	if err != nil {
 		log.Fatal(err)
@@ -54,14 +55,15 @@ func GetCrateUrl(fileName string) string {
 		//  fmt.Println("\n")
 		if fileName == content.GetName() {
 			crateUrl = content.GetDownloadURL()
+			crateFile = content.GetName()
 		}
 	}
-	return crateUrl
+	return crateUrl, crateFile
 }
 
-func DownloadCargoYaml(crateUrl string) (err error) {
+func DownloadCargoYaml(crateUrl string, fileName string) (err error) {
 	// Create the filePath
-	out, err := os.Create(initUtils.CargoPath)
+	out, err := os.Create(fileName)
 	if err != nil {
 		return err
 	}
@@ -81,4 +83,42 @@ func DownloadCargoYaml(crateUrl string) (err error) {
 	}
 
 	return nil
+}
+
+func FormatFileName(fileName string) string {
+	return initUtils.CargoPath + fileName
+}
+
+func CheckLocalCrateDir(crateName string) {
+	// TODO -  This will check local dir for crates that are trying to be installed.
+	// ie cargo install kubectl this would look here first for any know tap like file with the instructions.
+	log.Fatal("func not yet implamented!!")
+}
+
+// TODO - This would be a func that you would pass in url and api key
+func CheckContainerDir() {
+	// TODO This will check local containers for any instructions on where to look for the instructions.
+	// ie cargo install <org-name> <package>
+	log.Fatal("func not yet implamented!!")
+}
+
+func InitContainerYaml() {
+	// TODO - Create a org conf file with instructions on how to look install bla bla, this would be where it would say where the VCS is located Github, Gitlab, GitTea
+	log.Fatal("func not yet implamented!!")
+}
+
+func CheckSHA() {
+	// TODO - This Generate a SHA with the from a downloaded file and compare it with the yaml SHA
+	log.Fatal("func not yet implamented!!")
+}
+
+func EncryptCred() {
+	// TODO - How should this be encrypted? Bcrypt, RSA?
+	// EncryptCred before storing it in the yaml configuration.
+	log.Fatal("func not yet implamented!!")
+}
+
+func DecryptCred() {
+	// TODO - this wher we will pass in the encrypted value from the yaml file and we will decrypt it for use.
+	log.Fatal("func not yet implamented!!")
 }
