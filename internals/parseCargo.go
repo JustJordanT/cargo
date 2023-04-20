@@ -2,7 +2,10 @@ package internals
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -61,28 +64,30 @@ func GetCrateUrl(fileName string) (string, string) {
 	return crateUrl, crateFile
 }
 
-func DownloadCargoYaml(crateUrl string, fileName string) (err error) {
+func DownloadCargoYaml(fileName string) (filePath string, err error) {
+	url, crateName := GetCrateUrl(fileName)
 	// Create the filePath
-	out, err := os.Create(fileName)
+	out, err := os.Create(FormatFileName(crateName))
 	if err != nil {
-		return err
+		return filePath, err
 	}
 	defer out.Close()
 
 	// Get the data
-	resp, err := http.Get(crateUrl)
+	resp, err := http.Get(url)
 	if err != nil {
-		return err
+		return filePath, err
 	}
 	defer resp.Body.Close()
 
 	// Writer the body to file
 	_, err = io.Copy(out, resp.Body)
 	if err != nil {
-		return err
+		return filePath, err
 	}
 
-	return nil
+	// TODO we should be returning the failPath to be able to look up the yaml configration for getting the zip url location.
+	return filePath, nil
 }
 
 func FormatFileName(fileName string) string {
@@ -97,7 +102,7 @@ func CheckLocalCrateDir(crateName string) {
 
 // TODO - This would be a func that you would pass in url and api key
 func CheckContainerDir() {
-	// TODO This will check local containers for any instructions on where to look for the instructions.
+	// TODO This will checks local containers for any instructions on where to look for the instructions for a given crate.
 	// ie cargo install <org-name> <package>
 	log.Fatal("func not yet implamented!!")
 }
@@ -107,9 +112,23 @@ func InitContainerYaml() {
 	log.Fatal("func not yet implamented!!")
 }
 
-func CheckSHA() {
-	// TODO - This Generate a SHA with the from a downloaded file and compare it with the yaml SHA
-	log.Fatal("func not yet implamented!!")
+func CompareSHA256(filename string, expectedSHA string) (bool, error) {
+	// Read the contents of the file
+	fileBytes, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return false, err
+	}
+
+	// Calculate the SHA256 checksum of the file
+	sha256Bytes := sha256.Sum256(fileBytes)
+	actualSHA := hex.EncodeToString(sha256Bytes[:])
+
+	// Compare the calculated SHA256 with the expected value
+	if actualSHA != expectedSHA {
+		return false, nil
+	}
+
+	return true, nil
 }
 
 func EncryptCred() {
