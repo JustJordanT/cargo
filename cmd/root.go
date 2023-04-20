@@ -6,6 +6,7 @@ package cmd
 import (
 	"os"
 
+	"github.com/justjordant/cargo/cmd/container"
 	"github.com/justjordant/cargo/cmd/crate"
 	"github.com/spf13/cobra"
 )
@@ -30,6 +31,7 @@ func Execute() {
 
 func init() {
 	RootCmd.AddCommand(crate.CrateCmd)
+	RootCmd.AddCommand(container.ContainerCmd)
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
