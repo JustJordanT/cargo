@@ -2,7 +2,9 @@ package container
 
 import (
 	"fmt"
+	"os"
 
+	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
 )
 
@@ -12,6 +14,11 @@ var ContainerCmd = &cobra.Command{
 	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("container called")
+		logger := log.New(os.Stderr)
+		butter := true
+		if butter {
+			logger.Warn("chewy!", "butter", true)
+		}
 	},
 }
 

@@ -6,10 +6,10 @@ import (
 	"os"
 )
 
-var CargoPath = "/usr/local/cargo/"              // Specify the directory path here
-var ContainerPath = "/usr/local/cargo/container" // Specify the directory path here
-var CratePath = "/usr/local/cargo/crates"        // Specify the directory path here
-var LogsPath = "/usr/local/var/log/cargo"        // Specify the directory path here
+var CargoPath = "/usr/local/cargo/"                    // Specify the directory path here
+var ContainerPath = "/usr/local/cargo/container"       // Specify the directory path here
+var CratePath = "/usr/local/cargo/crates"              // Specify the directory path here
+var LogsPath = "/usr/local/var/log/cargo/loggious.txt" // Specify the directory path here
 
 func CheckDirExist(path string) bool {
 	_, err := os.Stat(path)
