@@ -9,6 +9,7 @@
 .idea/**/dictionaries
 .idea/**/shelf
 *.idea/
+*.vscode/
 
 # AWS User-specific
 .idea/**/aws.xml
@@ -101,3 +102,5 @@ fabric.properties
 # Go workspace file
 go.work
 
+#cargo
+cargo*

@@ -1,0 +1,7 @@
+2023/05/15 19:11:15 FATA <loggy/loggious.go:23> open logfile.txt: too many open files
+FATA open logfile.txt: too many open files
+FATA open logfile.txt: too many open files
+INFO [Cargo working...]
+2023/05/15 16:28:54 INFO <loggy/loggious.go:30> [Cargo working...]
+2023/05/15 16:34:25 INFO <loggy/loggious.go:33> [Cargo working...]
+2023/05/15 16:46:24 FATA <loggy/loggious.go:46> [Cargo fatal error...]
