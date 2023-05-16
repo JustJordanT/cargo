@@ -30,11 +30,17 @@ var installCmd = &cobra.Command{
 
 		//  fmt.Println(internals.FormatFileName(appName))
 
-		filePath, err := internals.DownloadCargoYaml(args[0])
+		// filePath, err := internals.DownloadCargoYaml(args[0])
+		// if err != nil {
+		// 	log.Fatal("Error: ", err)
+		// }
+		// fmt.Println(filePath)
+		url, file, err := internals.GetCrateUrl("tool.yml")
 		if err != nil {
-			log.Fatal("Error: ", err)
+			log.Fatal(err)
 		}
-		fmt.Println(filePath)
+
+		fmt.Printf("Download URL: %v\n File: %v", url, file)
 	},
 }
 

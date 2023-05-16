@@ -4,15 +4,18 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
-	"io"
+	"errors"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/google/go-github/v37/github"
 	"github.com/justjordant/cargo/internals/initUtils"
 	"golang.org/x/oauth2"
+)
+
+var (
+	ErrFileNotFound = errors.New("Could not find file, in the target repository.")
 )
 
 var GitEnv = os.Getenv("CARGO_TOKEN")
@@ -25,70 +28,59 @@ var githubToken = oauth2.StaticTokenSource(
 var tc = oauth2.NewClient(ctx, githubToken)
 var client = github.NewClient(tc)
 
-func GetCrateUrl(fileName string) (string, string) {
+func GetCrateUrl(fileName string) (string, string, error) {
 	// Get the contents of the "crates" folder
-	crateUrl := ""
-	crateFile := ""
+	var crateUrl, crateFile string
 	_, dirContents, _, err := client.Repositories.GetContents(ctx, "justjordant", "cargo-crates", "Crates", &github.RepositoryContentGetOptions{})
 	if err != nil {
-		log.Fatal(err)
+		return "", "", err
 	}
 
-	// Iterate through the contents of the "crates" folder
+	// Find the specified file name in the directory contents
+	found := false
 	for _, content := range dirContents {
-		//  if content.GetType() == "dir" {
-		//  // If the content is a directory, get its contents as well
-		//  _, subDirContents, _, err := client.Repositories.GetContents(ctx, "justjordant", "cargo-crates", content.GetPath(), &github.RepositoryContentGetOptions{})
-		//  if err != nil {
-		//  panic(err)
-		//  }
-
-		//  // Print the names of the files in the subdirectory
-		//  for _, subContent := range subDirContents {
-		//  fmt.Println(subContent.GetName())
-		//  }
-		//  } else {
-		// If the content is a file, print its name
-		//  }
-		//  fmt.Println(content.GetName())
-		//  fmt.Println(content.GetType())
-		//  fmt.Println(content.GetURL())
-		//  fmt.Println(content.GetGitURL())
-		//  fmt.Println(content.GetPath())
-		//  fmt.Println("\n")
 		if fileName == content.GetName() {
 			crateUrl = content.GetDownloadURL()
 			crateFile = content.GetName()
+			found = true
+			break
 		}
 	}
-	return crateUrl, crateFile
+
+	// Return an error if the file name was not found
+	if !found {
+		// return "", "", fmt.Errorf("file '%s' not found", fileName)
+		return "", "", ErrFileNotFound
+	}
+
+	return crateUrl, crateFile, nil
 }
 
-func DownloadCargoYaml(fileName string) (filePath string, err error) {
-	url, crateName := GetCrateUrl(fileName)
-	// Create the filePath
-	out, err := os.Create(FormatFileName(crateName))
-	if err != nil {
-		return filePath, err
-	}
-	defer out.Close()
+// func DownloadCargoYaml(fileName string) (filePath string, err error) {
+// 	url, crateName := GetCrateUrl(fileName)``
+// 	// Create the filePath
+// 	out, err := os.Create(FormatFileName(crateName))
+// 	if err != nil {
+// 		return filePath, err
+// 	}
+// 	defer out.Close()
 
-	// Get the data
-	resp, err := http.Get(url)
-	if err != nil {
-		return filePath, err
-	}
-	defer resp.Body.Close()
+// 	// Get the data
+// 	resp, err := http.Get(url)
+// 	if err != nil {
+// 		return filePath, err
+// 	}
+// 	defer resp.Body.Close()
 
-	// Writer the body to file
-	_, err = io.Copy(out, resp.Body)
-	if err != nil {
-		return filePath, err
-	}
+// 	// Writer the body to file
+// 	_, err = io.Copy(out, resp.Body)
+// 	if err != nil {
+// 		return filePath, err
+// 	}
 
-	// TODO we should be returning the failPath to be able to look up the yaml configration for getting the zip url location.
-	return filePath, nil
-}
+// 	// TODO we should be returning the failPath to be able to look up the yaml configration for getting the zip url location.
+// 	return filePath, nil
+// }
 
 func FormatFileName(fileName string) string {
 	return initUtils.CargoPath + fileName
@@ -131,12 +123,13 @@ func CompareSHA256(filename string, expectedSHA string) (bool, error) {
 	return true, nil
 }
 
+// TODO implement encryption and decryption for api configuration for containers for parsing organization repositories.
 func EncryptCred() {
-	// TODO - How should this be encrypted? Bcrypt, RSA?
+	// TODO - Using GCM.
 	log.Fatal("func not yet implamented!!")
 }
 
 func DecryptCred() {
-	// TODO - this wher we will pass in the encrypted value from the yaml file and we will decrypt it for use.
+	// TODO - this where we will pass in the encrypted value from the yaml file and we will decrypt it for use.
 	log.Fatal("func not yet implamented!!")
 }

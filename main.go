@@ -8,7 +8,7 @@ import (
 func main() {
 
 	// TODO - This section might be better off in BASH, where we can pull in the all the needed this.
-	// TODO - Don't worry about the code sigining thing for the application,
+	// TODO - Don't worry about the code signing thing for the application,
 	// focus on installing of 3rd party apps first and then circle back on this down the road.
 	createFile := false
 	if createFile {

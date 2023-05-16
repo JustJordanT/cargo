@@ -1,6 +1,9 @@
 # Cargo 🏗 - (WIP NOT READY FOR USE)
 The package manager... 
-![image](https://user-images.githubusercontent.com/38886930/230489111-21547871-d59d-49cb-945c-612ef2092169.png)
+
+<img width="627" alt="image" src="https://user-images.githubusercontent.com/38886930/233756499-0e429e9d-9180-4cd5-9754-dd8eb9c4ba8a.png">
+
+
 # Technical Overview of Cargo
 Security and privacy are critical considerations in the design of the Cargo. Cargo provides a secure and reliable way for users to manage their application installations and configurations, including the ability to work with private repositories.
 

@@ -6,6 +6,7 @@ require (
 	github.com/charmbracelet/log v0.2.1
 	github.com/google/go-github/v37 v37.0.0
 	github.com/spf13/cobra v1.7.0
+	github.com/stretchr/testify v1.8.2
 	golang.org/x/oauth2 v0.6.0
 )
 
@@ -28,4 +29,5 @@ require (
 	golang.org/x/sys v0.6.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
